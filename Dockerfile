@@ -22,17 +22,18 @@ RUN apt-get update && apt-get install -y \
     supervisor \
     && rm -rf /var/lib/apt/lists/*
 
-RUN mkdir -p ~/.vnc
-
-RUN echo "zeabur123" | vncpasswd -f > ~/.vnc/passwd && chmod 600 ~/.vnc/passwd
+RUN mkdir -p ~/.vnc && \
+    echo "zeabur123" | vncpasswd -f > ~/.vnc/passwd && \
+    chmod 600 ~/.vnc/passwd
 
 RUN cat > ~/.vnc/xstartup << 'EOF'
 #!/bin/bash
 startxfce4 &
 EOF
-chmod +x ~/.vnc/xstartup
+RUN chmod +x ~/.vnc/xstartup
 
-RUN mkdir -p /etc/supervisor/conf.d && cat > /etc/supervisor/conf.d/vncserver.conf << 'EOF'
+RUN mkdir -p /etc/supervisor/conf.d && \
+    cat > /etc/supervisor/conf.d/vncserver.conf << 'EOF'
 [supervisord]
 nodaemon=true
 
